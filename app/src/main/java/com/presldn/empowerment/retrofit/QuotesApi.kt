@@ -5,7 +5,7 @@ import io.reactivex.Observable
 import retrofit2.http.GET
 import java.util.*
 
-interface GetQuotes {
+interface QuotesApi {
     @GET("quotes")
     fun getQuotes(): Observable<List<Quote>>
 }

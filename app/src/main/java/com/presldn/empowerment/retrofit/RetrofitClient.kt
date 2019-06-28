@@ -10,12 +10,12 @@ class RetrofitClient {
 
         private const val BASE_URL = "https://my-json-server.typicode.com/presldn/quotes/"
 
-        fun loadData(): GetQuotes {
+        fun loadData(): QuotesApi {
             return Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build().create(GetQuotes::class.java)
+                .build().create(QuotesApi::class.java)
 
         }
     }
