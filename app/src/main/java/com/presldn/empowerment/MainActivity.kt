@@ -1,11 +1,21 @@
 package com.presldn.empowerment
 
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
+import com.presldn.empowerment.models.Quote
+import com.presldn.empowerment.retrofit.RetrofitClient
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 
 class MainActivity : AppCompatActivity() {
+
+    private val TAG = "MainActivity"
+
+    private var compositeDisposable: CompositeDisposable? = null
 
     private lateinit var textMessage: TextView
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -33,5 +43,15 @@ class MainActivity : AppCompatActivity() {
 
         textMessage = findViewById(R.id.message)
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+
+        compositeDisposable = CompositeDisposable()
+
+        compositeDisposable?.add(RetrofitClient.loadData().getQuotes().observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io()).subscribe(this::handleResponse))
+
+    }
+
+    private fun handleResponse(quoteList: List<Quote>) {
+        Log.d(TAG, "list of quotes: $quoteList")
     }
 }
