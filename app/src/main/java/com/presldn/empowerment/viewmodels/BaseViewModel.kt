@@ -2,8 +2,8 @@ package com.presldn.empowerment.viewmodels
 
 import androidx.lifecycle.ViewModel
 import com.presldn.empowerment.injection.component.DaggerViewModelInjector
-import com.presldn.empowerment.injection.component.ViewModelInjector
-import com.presldn.empowerment.module.NetworkModule
+import com.presldn.empowerment.networking.dagger.component.ViewModelInjector
+import com.presldn.empowerment.networking.dagger.module.NetworkModule
 
 abstract class BaseViewModel : ViewModel() {
     private val injector: ViewModelInjector = DaggerViewModelInjector

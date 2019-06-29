@@ -1,7 +1,6 @@
-package com.presldn.empowerment.ui
+package com.presldn.empowerment.view.activities
 
 import android.os.Bundle
-import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -11,7 +10,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import com.presldn.empowerment.R
 import com.presldn.empowerment.databinding.ActivityMainBinding
-import com.presldn.empowerment.models.Quote
 import com.presldn.empowerment.viewmodels.MainViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -54,10 +52,6 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         viewModel.errorMessage.observe(this, Observer {
                 errorMessage -> if(errorMessage != null) showError(errorMessage) else hideError()
-        })
-
-        viewModel.quotes.observe(this, Observer {
-            quotes -> loadFragment(QuotesFragment.newInstance(quotes as ArrayList<out Quote>))
         })
 
     }

@@ -1,6 +1,6 @@
-package com.presldn.empowerment.injection.component
+package com.presldn.empowerment.networking.dagger.component
 
-import com.presldn.empowerment.module.NetworkModule
+import com.presldn.empowerment.networking.dagger.module.NetworkModule
 import com.presldn.empowerment.viewmodels.MainViewModel
 import dagger.Component
 import javax.inject.Singleton

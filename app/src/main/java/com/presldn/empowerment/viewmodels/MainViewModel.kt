@@ -5,7 +5,7 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.presldn.empowerment.R
 import com.presldn.empowerment.models.Quote
-import com.presldn.empowerment.retrofit.QuotesApi
+import com.presldn.empowerment.networking.apis.QuotesApi
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers

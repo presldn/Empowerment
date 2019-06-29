@@ -1,4 +1,4 @@
-package com.presldn.empowerment.ui
+package com.presldn.empowerment.view.fragments
 
 
 import android.os.Bundle
@@ -6,9 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 
 import com.presldn.empowerment.R
+import com.presldn.empowerment.databinding.FragmentQuotesBinding
 import com.presldn.empowerment.models.Quote
+import com.presldn.empowerment.viewmodels.MainViewModel
 
 private const val ARG_QUOTES = "quotes"
 
@@ -20,6 +25,10 @@ private const val ARG_QUOTES = "quotes"
  */
 class QuotesFragment : Fragment() {
     private var quotes: List<Quote>? = null
+
+    private lateinit var viewModel: MainViewModel
+
+    private lateinit var binding: FragmentQuotesBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,18 +42,21 @@ class QuotesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_quotes, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_quotes, container, false)
+
+        return binding.root
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel = ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
+        viewModel.quotes.observe(this, Observer { quotes ->
+
+        })
+    }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @return A new instance of fragment QuotesFragment.
-         */
+
         @JvmStatic
         fun newInstance(param1: ArrayList<out Quote>) =
             QuotesFragment().apply {
