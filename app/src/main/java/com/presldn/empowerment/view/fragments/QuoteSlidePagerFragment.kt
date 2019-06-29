@@ -7,12 +7,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
 
 import com.presldn.empowerment.R
+import com.presldn.empowerment.databinding.FragmentQuoteSlidePagerBinding
+import com.presldn.empowerment.models.Quote
+import com.presldn.empowerment.viewmodels.QuoteViewModel
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val ARG_CURRENT_QUOTE = "current_quote"
 
 /**
  * A simple [Fragment] subclass.
@@ -24,17 +28,27 @@ private const val ARG_PARAM2 = "param2"
  *
  */
 class QuoteSlidePagerFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private lateinit var viewModel: QuoteViewModel
+
+    private lateinit var binding: FragmentQuoteSlidePagerBinding
+
+    private var quote: Quote? = null
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            quote = it.getParcelable(ARG_CURRENT_QUOTE)
         }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel = ViewModelProviders.of(this).get(QuoteViewModel::class.java)
+        quote?.let { viewModel.bind(it) }
+
+        binding.viewModel = viewModel
     }
 
     override fun onCreateView(
@@ -42,7 +56,9 @@ class QuoteSlidePagerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_quote_slide_pager, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_quote_slide_pager, container, false)
+
+        return binding.root
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -86,16 +102,13 @@ class QuoteSlidePagerFragment : Fragment() {
          * this fragment using the provided parameters.
          *
          * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
          * @return A new instance of fragment QuoteSlidePagerFragment.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(param1: Quote) =
             QuoteSlidePagerFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putParcelable(ARG_CURRENT_QUOTE, param1)
                 }
             }
     }

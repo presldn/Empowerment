@@ -13,6 +13,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.presldn.empowerment.R
 import com.presldn.empowerment.databinding.FragmentQuotesBinding
 import com.presldn.empowerment.models.Quote
+import com.presldn.empowerment.view.adapters.QuotePagerAdapter
+import com.presldn.empowerment.view.transformers.ZoomOutPageTransformer
 import com.presldn.empowerment.viewmodels.MainViewModel
 
 private const val ARG_QUOTES = "quotes"
@@ -30,6 +32,8 @@ class QuotesFragment : Fragment() {
 
     private lateinit var binding: FragmentQuotesBinding
 
+    private lateinit var quotePagerAdapter: QuotePagerAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -44,6 +48,11 @@ class QuotesFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_quotes, container, false)
 
+        quotePagerAdapter = QuotePagerAdapter(childFragmentManager)
+
+        binding.viewPager.adapter = quotePagerAdapter
+        binding.viewPager.setPageTransformer(true, ZoomOutPageTransformer())
+
         return binding.root
     }
 
@@ -51,7 +60,7 @@ class QuotesFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
         viewModel.quotes.observe(this, Observer { quotes ->
-
+            if (quotes != null) quotePagerAdapter.updateQuoteList(quotes)
         })
     }
 

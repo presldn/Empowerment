@@ -1,7 +1,7 @@
 package com.presldn.empowerment.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.presldn.empowerment.injection.component.DaggerViewModelInjector
+import com.presldn.empowerment.networking.dagger.component.DaggerViewModelInjector
 import com.presldn.empowerment.networking.dagger.component.ViewModelInjector
 import com.presldn.empowerment.networking.dagger.module.NetworkModule
 

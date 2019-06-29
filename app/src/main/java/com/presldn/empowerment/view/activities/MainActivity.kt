@@ -1,5 +1,6 @@
 package com.presldn.empowerment.view.activities
 
+import android.net.Uri
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -10,9 +11,14 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import com.presldn.empowerment.R
 import com.presldn.empowerment.databinding.ActivityMainBinding
+import com.presldn.empowerment.view.fragments.QuoteSlidePagerFragment
+import com.presldn.empowerment.view.fragments.QuotesFragment
 import com.presldn.empowerment.viewmodels.MainViewModel
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), QuoteSlidePagerFragment.OnFragmentInteractionListener {
+    override fun onFragmentInteraction(uri: Uri) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     private val TAG = "MainActivity"
 
@@ -27,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_quotes -> {
+                loadFragment(QuotesFragment())
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_search -> {
@@ -54,6 +61,7 @@ class MainActivity : AppCompatActivity() {
                 errorMessage -> if(errorMessage != null) showError(errorMessage) else hideError()
         })
 
+        loadFragment(QuotesFragment())
     }
 
     private fun hideError() {

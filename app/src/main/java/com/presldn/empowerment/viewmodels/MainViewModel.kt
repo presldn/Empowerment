@@ -22,8 +22,8 @@ class MainViewModel : BaseViewModel() {
 
     val quotes: MutableLiveData<List<Quote>> = MutableLiveData()
 
-    val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
-    val fragmentVisibility: MutableLiveData<Int> = MutableLiveData()
+    private val loadingVisibility: MutableLiveData<Int> = MutableLiveData()
+    private val fragmentVisibility: MutableLiveData<Int> = MutableLiveData()
 
     val errorMessage:MutableLiveData<Int> = MutableLiveData()
     val errorClickListener = View.OnClickListener { loadQuotes() }
@@ -37,6 +37,10 @@ class MainViewModel : BaseViewModel() {
         super.onCleared()
         subscription.dispose()
     }
+
+    fun getLoadingVisibility(): MutableLiveData<Int> = loadingVisibility
+
+    fun getFragmentVisibility(): MutableLiveData<Int> = fragmentVisibility
 
     private fun loadQuotes() {
         subscription = quotesApi.getQuotes()
@@ -58,6 +62,7 @@ class MainViewModel : BaseViewModel() {
 
     private fun onRetrieveQuotesFinish(){
         loadingVisibility.value = View.GONE
+
     }
 
     private fun onRetrieveQuotesSuccess(result: List<Quote>) {
