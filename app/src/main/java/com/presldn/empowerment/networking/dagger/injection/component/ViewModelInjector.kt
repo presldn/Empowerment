@@ -1,4 +1,4 @@
-package com.presldn.empowerment.networking.dagger.component
+package com.presldn.empowerment.networking.dagger.injection.component
 
 import com.presldn.empowerment.networking.dagger.module.NetworkModule
 import com.presldn.empowerment.viewmodels.MainViewModel

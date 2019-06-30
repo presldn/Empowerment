@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import com.presldn.empowerment.R
 import com.presldn.empowerment.databinding.ActivityMainBinding
+import com.presldn.empowerment.networking.dagger.injection.ViewModelFactory
 import com.presldn.empowerment.view.fragments.QuoteSlidePagerFragment
 import com.presldn.empowerment.view.fragments.QuotesFragment
 import com.presldn.empowerment.viewmodels.MainViewModel
@@ -56,7 +57,7 @@ class MainActivity : AppCompatActivity(), QuoteSlidePagerFragment.OnFragmentInte
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
 
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, ViewModelFactory(this)).get(MainViewModel::class.java)
         viewModel.errorMessage.observe(this, Observer {
                 errorMessage -> if(errorMessage != null) showError(errorMessage) else hideError()
         })

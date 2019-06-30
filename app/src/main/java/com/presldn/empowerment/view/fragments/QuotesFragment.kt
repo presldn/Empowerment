@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.presldn.empowerment.R
 import com.presldn.empowerment.databinding.FragmentQuotesBinding
 import com.presldn.empowerment.models.Quote
+import com.presldn.empowerment.networking.dagger.injection.ViewModelFactory
 import com.presldn.empowerment.view.adapters.QuotePagerAdapter
 import com.presldn.empowerment.view.transformers.ZoomOutPageTransformer
 import com.presldn.empowerment.viewmodels.MainViewModel
@@ -58,7 +59,7 @@ class QuotesFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
+        viewModel = ViewModelProviders.of(activity!!, ViewModelFactory(activity!!)).get(MainViewModel::class.java)
         viewModel.quotes.observe(this, Observer { quotes ->
             if (quotes != null) quotePagerAdapter.updateQuoteList(quotes)
         })
