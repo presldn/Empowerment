@@ -4,18 +4,20 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.presldn.empowerment.R
+import com.presldn.empowerment.databinding.FragmentQuoteSlidePagerBinding
 import com.presldn.empowerment.models.Quote
 import com.presldn.empowerment.networking.apis.QuotesApi
 import com.presldn.empowerment.networking.room.QuoteDao
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Action
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class MainViewModel(private val quoteDao: QuoteDao) : BaseViewModel() {
+class QuoteListViewModel(private val quoteDao: QuoteDao) : BaseViewModel() {
 
-    private val TAG = "MainViewModel"
+    private val TAG = "QuoteListViewModel"
 
     @Inject
     lateinit var quotesApi: QuotesApi
@@ -37,6 +39,24 @@ class MainViewModel(private val quoteDao: QuoteDao) : BaseViewModel() {
     override fun onCleared() {
         super.onCleared()
         subscription.dispose()
+    }
+
+
+    fun toggleFavorite(quote: Quote?, binding: FragmentQuoteSlidePagerBinding) {
+        quote?.favorite = !quote?.favorite!!
+
+        subscription = quoteDao.update(quote)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(onUpdateSuccess(binding))
+
+    }
+
+    private fun onUpdateSuccess(binding: FragmentQuoteSlidePagerBinding): Action? {
+        return Action {
+            binding.invalidateAll()
+            binding.executePendingBindings()
+        }
     }
 
     fun getLoadingVisibility(): MutableLiveData<Int> = loadingVisibility

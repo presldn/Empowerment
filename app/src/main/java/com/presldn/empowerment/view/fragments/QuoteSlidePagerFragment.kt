@@ -1,7 +1,6 @@
 package com.presldn.empowerment.view.fragments
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -21,7 +20,7 @@ private const val ARG_CURRENT_QUOTE = "current_quote"
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [QuoteSlidePagerFragment.OnFragmentInteractionListener] interface
+ * [QuoteSlidePagerFragment.OnQuoteInteractionListener] interface
  * to handle interaction events.
  * Use the [QuoteSlidePagerFragment.newInstance] factory method to
  * create an instance of this fragment.
@@ -34,7 +33,9 @@ class QuoteSlidePagerFragment : Fragment() {
     private lateinit var binding: FragmentQuoteSlidePagerBinding
 
     private var quote: Quote? = null
-    private var listener: OnFragmentInteractionListener? = null
+
+
+    private var listener: OnQuoteInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,21 +58,23 @@ class QuoteSlidePagerFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_quote_slide_pager, container, false)
-
+        binding.favBtn.setOnClickListener {
+            onFavoritePressed(quote, binding)
+        }
         return binding.root
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
+    fun onFavoritePressed(quote: Quote?, binding: FragmentQuoteSlidePagerBinding) {
+        listener?.onFavoriteInteraction(quote, binding)
+        // FIXME: 30/06/2019 delay when updating UI
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
+        if (context is OnQuoteInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnQuoteInteractionListener")
         }
     }
 
@@ -80,30 +83,17 @@ class QuoteSlidePagerFragment : Fragment() {
         listener = null
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+
+    interface OnQuoteInteractionListener {
+        fun onFavoriteInteraction(
+            quote: Quote?,
+            binding: FragmentQuoteSlidePagerBinding
+        )
+        fun onShareInteraction(quote: Quote?)
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @return A new instance of fragment QuoteSlidePagerFragment.
-         */
+
         @JvmStatic
         fun newInstance(param1: Quote) =
             QuoteSlidePagerFragment().apply {

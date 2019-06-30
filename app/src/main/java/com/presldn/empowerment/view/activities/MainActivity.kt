@@ -1,7 +1,7 @@
 package com.presldn.empowerment.view.activities
 
-import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -11,19 +11,22 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import com.presldn.empowerment.R
 import com.presldn.empowerment.databinding.ActivityMainBinding
+import com.presldn.empowerment.databinding.FragmentQuoteSlidePagerBinding
+import com.presldn.empowerment.models.Quote
 import com.presldn.empowerment.networking.dagger.injection.ViewModelFactory
+import com.presldn.empowerment.view.fragments.FavoritesFragment
 import com.presldn.empowerment.view.fragments.QuoteSlidePagerFragment
 import com.presldn.empowerment.view.fragments.QuotesFragment
-import com.presldn.empowerment.viewmodels.MainViewModel
+import com.presldn.empowerment.viewmodels.QuoteListViewModel
 
-class MainActivity : AppCompatActivity(), QuoteSlidePagerFragment.OnFragmentInteractionListener {
-    override fun onFragmentInteraction(uri: Uri) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+class MainActivity : AppCompatActivity(), QuoteSlidePagerFragment.OnQuoteInteractionListener {
+
+
+
 
     private val TAG = "MainActivity"
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: QuoteListViewModel
 
     private lateinit var binding: ActivityMainBinding
 
@@ -41,26 +44,38 @@ class MainActivity : AppCompatActivity(), QuoteSlidePagerFragment.OnFragmentInte
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_favourites -> {
+                Log.d(TAG, "load the ting ===================== ")
+                loadFragment(FavoritesFragment())
                 return@OnNavigationItemSelectedListener true
             }
         }
         false
     }
 
+    override fun onShareInteraction(quote: Quote?) {
+
+    }
+
+    override fun onFavoriteInteraction(
+        quote: Quote?,
+        binding: FragmentQuoteSlidePagerBinding
+    ) {
+        viewModel.toggleFavorite(quote, binding)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
-
-        viewModel = ViewModelProviders.of(this, ViewModelFactory(this)).get(MainViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, ViewModelFactory(this)).get(QuoteListViewModel::class.java)
         viewModel.errorMessage.observe(this, Observer {
                 errorMessage -> if(errorMessage != null) showError(errorMessage) else hideError()
         })
+
+        binding.navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
         loadFragment(QuotesFragment())
     }
@@ -75,7 +90,7 @@ class MainActivity : AppCompatActivity(), QuoteSlidePagerFragment.OnFragmentInte
         errorSnackbar?.show()
     }
 
-    fun loadFragment(newFragment: Fragment) {
+    private fun loadFragment(newFragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction().apply {
             // Replace whatever is in the fragment_container view with this fragment,
             // and add the transaction to the back stack so the user can navigate back

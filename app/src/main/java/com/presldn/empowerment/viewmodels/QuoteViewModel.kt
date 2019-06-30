@@ -19,6 +19,6 @@ class QuoteViewModel : BaseViewModel() {
 
     fun getQuoteMessage(): MutableLiveData<String> = quoteMessage
 
-    fun getQuoteFavorite(): MutableLiveData<Boolean> = quoteFavorite
+    fun isQuoteFavorite(): MutableLiveData<Boolean> = quoteFavorite
 
 }
