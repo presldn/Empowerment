@@ -1,13 +1,13 @@
 package com.presldn.empowerment.view.activities
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.presldn.empowerment.R
 import com.presldn.empowerment.databinding.ActivityMainBinding
@@ -39,9 +39,6 @@ class MainActivity : AppCompatActivity(), QuoteSlidePagerFragment.OnQuoteInterac
                 loadFragment(QuotesFragment())
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_search -> {
-                return@OnNavigationItemSelectedListener true
-            }
             R.id.navigation_favourites -> {
                 loadFragment(FavoritesFragment())
                 return@OnNavigationItemSelectedListener true
@@ -51,7 +48,13 @@ class MainActivity : AppCompatActivity(), QuoteSlidePagerFragment.OnQuoteInterac
     }
 
     override fun onShareInteraction(quote: Quote?) {
+        val message = "${quote!!.message} - ${quote.author}"
 
+        val sharingIntent = Intent(Intent.ACTION_SEND)
+        sharingIntent.type = "text/plain"
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Quote share")
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, message)
+        startActivity(Intent.createChooser(sharingIntent, "Share using"))
     }
 
     override fun onFavoriteInteraction(

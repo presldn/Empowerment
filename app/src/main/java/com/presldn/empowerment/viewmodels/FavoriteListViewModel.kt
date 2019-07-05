@@ -1,8 +1,8 @@
 package com.presldn.empowerment.viewmodels
 
+import android.content.Context
 import android.util.Log
 import android.view.View
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import com.presldn.empowerment.R
 import com.presldn.empowerment.models.Quote
@@ -15,7 +15,8 @@ import io.reactivex.functions.Action
 import io.reactivex.schedulers.Schedulers
 
 class FavoriteListViewModel(
-    private val quoteDao: QuoteDao
+    private val quoteDao: QuoteDao,
+    private val context: Context
 ) : BaseViewModel() {
 
     private val TAG = "FavoriteListViewModel"
@@ -27,7 +28,7 @@ class FavoriteListViewModel(
     val emptyListMessageVisibility: MutableLiveData<Int> = MutableLiveData()
     val recyclerViewVisibility: MutableLiveData<Int> = MutableLiveData()
 
-    private val favoritesListAdapter = FavoritesListAdapter(this)
+    private val favoritesListAdapter = FavoritesListAdapter(this, context)
 
     val favoriteRemoved: MutableLiveData<Int> = MutableLiveData()
 

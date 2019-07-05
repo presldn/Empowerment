@@ -2,13 +2,12 @@ package com.presldn.empowerment.view.fragments
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-
 import com.presldn.empowerment.R
 import com.presldn.empowerment.databinding.FragmentQuoteSlidePagerBinding
 import com.presldn.empowerment.models.Quote
@@ -61,7 +60,15 @@ class QuoteSlidePagerFragment : Fragment() {
         binding.favBtn.setOnClickListener {
             onFavoritePressed(quote, binding)
         }
+
+        binding.shareBtn.setOnClickListener {
+            onShareQuote(quote)
+        }
         return binding.root
+    }
+
+    private fun onShareQuote(quote: Quote?) {
+        listener?.onShareInteraction(quote!!)
     }
 
     private fun onFavoritePressed(quote: Quote?, binding: FragmentQuoteSlidePagerBinding) {

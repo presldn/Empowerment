@@ -1,9 +1,10 @@
 package com.presldn.empowerment.view.adapters
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.presldn.empowerment.R
 import com.presldn.empowerment.databinding.QuoteListItemBinding
@@ -11,7 +12,9 @@ import com.presldn.empowerment.models.Quote
 import com.presldn.empowerment.viewmodels.FavoriteListViewModel
 import com.presldn.empowerment.viewmodels.QuoteViewModel
 
-class FavoritesListAdapter(private val viewModel: FavoriteListViewModel) : RecyclerView.Adapter<FavoritesListAdapter.ViewHolder>() {
+
+class FavoritesListAdapter(private val viewModel: FavoriteListViewModel, private val context: Context)
+    : RecyclerView.Adapter<FavoritesListAdapter.ViewHolder>() {
 
     private lateinit var favorites: List<Quote>
 
@@ -32,6 +35,16 @@ class FavoritesListAdapter(private val viewModel: FavoriteListViewModel) : Recyc
 
     fun removeFavorite(quote: Quote) {
         viewModel.onRemoveFavorite(quote)
+    }
+
+    fun shareFavorite(quote: Quote) {
+        val message = "${quote.message} - ${quote.author}"
+
+        val sharingIntent = Intent(Intent.ACTION_SEND)
+        sharingIntent.type = "text/plain"
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Quote share")
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, message)
+        context.startActivity(Intent.createChooser(sharingIntent, "Share using"))
     }
 
     fun updateFavorites(favorites:List<Quote>){

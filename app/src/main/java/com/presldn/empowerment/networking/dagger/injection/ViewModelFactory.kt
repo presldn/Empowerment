@@ -17,7 +17,7 @@ class ViewModelFactory(private val activity: FragmentActivity): ViewModelProvide
         } else if(modelClass.isAssignableFrom(FavoriteListViewModel::class.java)) {
             val db = Room.databaseBuilder(activity.applicationContext, AppDatabase::class.java, "quotes").build()
             @Suppress("UNCHECKED_CAST")
-            return FavoriteListViewModel(db.quoteDao()) as T
+            return FavoriteListViewModel(db.quoteDao(), activity) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
 
