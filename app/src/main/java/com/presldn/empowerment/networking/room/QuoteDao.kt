@@ -17,4 +17,7 @@ interface QuoteDao {
 
     @Update
     fun update(quote: Quote): Completable
+
+    @Delete
+    fun delete(quote: Quote): Completable
 }

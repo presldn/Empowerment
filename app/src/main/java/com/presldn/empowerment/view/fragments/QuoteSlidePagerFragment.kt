@@ -64,9 +64,12 @@ class QuoteSlidePagerFragment : Fragment() {
         return binding.root
     }
 
-    fun onFavoritePressed(quote: Quote?, binding: FragmentQuoteSlidePagerBinding) {
-        listener?.onFavoriteInteraction(quote, binding)
-        // FIXME: 30/06/2019 delay when updating UI
+    private fun onFavoritePressed(quote: Quote?, binding: FragmentQuoteSlidePagerBinding) {
+        quote?.favorite = !quote?.favorite!!
+
+        viewModel.bind(quote)
+        binding.invalidateAll()
+        listener?.onFavoriteInteraction(quote)
     }
 
     override fun onAttach(context: Context) {
@@ -86,9 +89,9 @@ class QuoteSlidePagerFragment : Fragment() {
 
     interface OnQuoteInteractionListener {
         fun onFavoriteInteraction(
-            quote: Quote?,
-            binding: FragmentQuoteSlidePagerBinding
+            quote: Quote?
         )
+
         fun onShareInteraction(quote: Quote?)
     }
 

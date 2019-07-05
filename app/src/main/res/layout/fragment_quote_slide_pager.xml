@@ -6,7 +6,7 @@
     </data>
     <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             tools:context=".view.fragments.QuoteSlidePagerFragment" android:orientation="vertical"
             android:gravity="center"
             android:padding="24dp">
@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:layout_gravity="end" android:gravity="end">
             <ImageButton
-                    app:mutableFavorite="@{viewModel.isQuoteFavorite()}"
+                    app:mutableFavorite="@{viewModel.getQuoteFavorite()}"
                     android:layout_width="wrap_content"
                     style="?buttonBarButtonStyle"
                     android:layout_height="wrap_content" android:id="@+id/fav_btn" android:layout_weight="0"/>

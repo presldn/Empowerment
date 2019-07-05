@@ -4,13 +4,19 @@
     <data>
         <variable name="viewModel" type="com.presldn.empowerment.viewmodels.FavoriteListViewModel"/>
     </data>
-    <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".view.fragments.FavoritesFragment"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:adapter="@{viewModel.getFavoritesListAdapter()}"
-            tools:listitem="@layout/quote_list_item">
-
-    </androidx.recyclerview.widget.RecyclerView>
+    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".view.fragments.FavoritesFragment"
+                app:mutableVisibility="@{viewModel.getRecyclerViewVisibility()}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:adapter="@{viewModel.getFavoritesListAdapter()}"
+                tools:listitem="@layout/quote_list_item"/>
+        <TextView android:layout_width="match_parent"
+                  android:text="@string/no_favorite_quotes"
+                  app:mutableVisibility="@{viewModel.getEmptyListMessageVisibility()}"
+                  android:gravity="center"
+                  android:layout_height="match_parent"/>
+    </FrameLayout>
 </layout>

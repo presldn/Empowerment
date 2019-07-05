@@ -4,7 +4,6 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.presldn.empowerment.R
-import com.presldn.empowerment.databinding.FragmentQuoteSlidePagerBinding
 import com.presldn.empowerment.models.Quote
 import com.presldn.empowerment.networking.apis.QuotesApi
 import com.presldn.empowerment.networking.room.QuoteDao
@@ -32,6 +31,8 @@ class QuoteListViewModel(private val quoteDao: QuoteDao) : BaseViewModel() {
     val errorMessage: MutableLiveData<Int> = MutableLiveData()
     val errorClickListener = View.OnClickListener { loadQuotes() }
 
+    val quoteLikedMessage: MutableLiveData<Int> = MutableLiveData()
+
     init {
         loadQuotes()
     }
@@ -42,20 +43,20 @@ class QuoteListViewModel(private val quoteDao: QuoteDao) : BaseViewModel() {
     }
 
 
-    fun toggleFavorite(quote: Quote?, binding: FragmentQuoteSlidePagerBinding) {
-        quote?.favorite = !quote?.favorite!!
+    fun toggleFavorite(quote: Quote?) {
 
-        subscription = quoteDao.update(quote)
+        subscription = quoteDao.update(quote!!)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(onUpdateSuccess(binding))
-
+            .subscribe(onUpdateSuccess(quote.favorite))
     }
 
-    private fun onUpdateSuccess(binding: FragmentQuoteSlidePagerBinding): Action? {
+    private fun onUpdateSuccess(favorite: Boolean): Action? {
         return Action {
-            binding.invalidateAll()
-            binding.executePendingBindings()
+            if (favorite)
+                quoteLikedMessage.value = R.string.quotes_liked
+            else
+                quoteLikedMessage.value = null
         }
     }
 

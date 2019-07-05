@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import com.presldn.empowerment.R
 import com.presldn.empowerment.databinding.ActivityMainBinding
-import com.presldn.empowerment.databinding.FragmentQuoteSlidePagerBinding
 import com.presldn.empowerment.models.Quote
 import com.presldn.empowerment.networking.dagger.injection.ViewModelFactory
 import com.presldn.empowerment.view.fragments.FavoritesFragment
@@ -30,7 +29,7 @@ class MainActivity : AppCompatActivity(), QuoteSlidePagerFragment.OnQuoteInterac
 
     private lateinit var binding: ActivityMainBinding
 
-    private var errorSnackbar: Snackbar? = null
+    private var snackbar: Snackbar? = null
 
 
 
@@ -44,7 +43,6 @@ class MainActivity : AppCompatActivity(), QuoteSlidePagerFragment.OnQuoteInterac
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_favourites -> {
-                Log.d(TAG, "load the ting ===================== ")
                 loadFragment(FavoritesFragment())
                 return@OnNavigationItemSelectedListener true
             }
@@ -57,10 +55,9 @@ class MainActivity : AppCompatActivity(), QuoteSlidePagerFragment.OnQuoteInterac
     }
 
     override fun onFavoriteInteraction(
-        quote: Quote?,
-        binding: FragmentQuoteSlidePagerBinding
+        quote: Quote?
     ) {
-        viewModel.toggleFavorite(quote, binding)
+        viewModel.toggleFavorite(quote)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,19 +72,28 @@ class MainActivity : AppCompatActivity(), QuoteSlidePagerFragment.OnQuoteInterac
                 errorMessage -> if(errorMessage != null) showError(errorMessage) else hideError()
         })
 
+        viewModel.quoteLikedMessage.observe(this, Observer { likedMessage ->
+            if(likedMessage != null) showMessage(likedMessage)
+        })
+
         binding.navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
         loadFragment(QuotesFragment())
     }
 
+    private fun showMessage(likedMessage: Int) {
+        snackbar = Snackbar.make(binding.root, likedMessage, Snackbar.LENGTH_SHORT)
+        snackbar?.show()
+    }
+
     private fun hideError() {
-        errorSnackbar?.dismiss()
+        snackbar?.dismiss()
     }
 
     private fun showError(errorMessage: Int) {
-        errorSnackbar = Snackbar.make(binding.root, errorMessage, Snackbar.LENGTH_INDEFINITE)
-        errorSnackbar?.setAction(R.string.retry, viewModel.errorClickListener)
-        errorSnackbar?.show()
+        snackbar = Snackbar.make(binding.root, errorMessage, Snackbar.LENGTH_INDEFINITE)
+        snackbar?.setAction(R.string.retry, viewModel.errorClickListener)
+        snackbar?.show()
     }
 
     private fun loadFragment(newFragment: Fragment) {
