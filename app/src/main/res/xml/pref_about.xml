@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference android:title="@string/pref_name"
+                android:summary="@string/app_name"/>
+
+    <Preference android:title="@string/pref_version"
+                android:summary="@string/version_code"/>
+
+    <Preference android:title="@string/developed_by"
+                android:summary="@string/company_name"/>
+
+    <Preference android:title="@string/github"
+                android:key="github"
+                android:summary="@string/github_repo_link"
+                android:selectable="true"/>
+
+</PreferenceScreen>

@@ -11,4 +11,9 @@
             android:icon="@drawable/ic_favorite_black_24dp"
             android:title="@string/title_favourites"/>
 
+    <item
+        android:id="@+id/navigation_about"
+        android:icon="@drawable/ic_help_outline_black_24dp"
+        android:title="@string/title_about"/>
+
 </menu>

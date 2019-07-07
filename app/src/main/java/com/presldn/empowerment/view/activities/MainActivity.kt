@@ -13,6 +13,7 @@ import com.presldn.empowerment.R
 import com.presldn.empowerment.databinding.ActivityMainBinding
 import com.presldn.empowerment.models.Quote
 import com.presldn.empowerment.networking.dagger.injection.ViewModelFactory
+import com.presldn.empowerment.view.fragments.AboutFragment
 import com.presldn.empowerment.view.fragments.FavoritesFragment
 import com.presldn.empowerment.view.fragments.QuoteSlidePagerFragment
 import com.presldn.empowerment.view.fragments.QuotesFragment
@@ -41,6 +42,10 @@ class MainActivity : AppCompatActivity(), QuoteSlidePagerFragment.OnQuoteInterac
             }
             R.id.navigation_favourites -> {
                 loadFragment(FavoritesFragment())
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_about -> {
+                loadFragment(AboutFragment())
                 return@OnNavigationItemSelectedListener true
             }
         }
